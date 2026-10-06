@@ -58,9 +58,25 @@ Run the Jupyter notebooks in order to reproduce the full analysis pipeline:
 
 If you use BBB-TransAI in your research, please cite:
 
-Kartic, Sharma A, Yi S, Park TS. Blood–brain barrier–transport artificial intelligence: A hybrid sequence–structure machine-learning framework for predicting blood–brain barrier-penetrant peptides. *Brain Network Disorders*. 2026.
+Kartic, Sharma A, Yi S, Park TS. Blood–brain barrier–transport artificial intelligence: A hybrid sequence–structure machine-learning framework for predicting blood–brain barrier-penetrant peptides. *Brain Network Disorders* (2026).
+https://doi.org/10.1016/j.bnd.2026.04.001
+
+```bibtex
+@article{kartic2026bbbtransai,
+  title   = {{Blood–brain barrier–transport artificial intelligence: A hybrid sequence–structure machine-learning framework for predicting blood–brain barrier-penetrant peptides}},
+  author  = {Kartic and Sharma, Amitesh and Yi, Sanggyun and Park, Tae-Sik},
+  journal = {Brain Network Disorders},
+  year    = {2026},
+  issn    = {3050-6239},
+  doi     = {10.1016/j.bnd.2026.04.001},
+  url     = {https://doi.org/10.1016/j.bnd.2026.04.001}
+}
+```
+
+GitHub reads `CITATION.cff` in this repository, so the "Cite this repository"
+button in the sidebar returns the same entry in APA or BibTeX.
 
 ## License
 
-This project is available for academic and research purposes.
+MIT. See [LICENSE](LICENSE).
 
