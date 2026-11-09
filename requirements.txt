@@ -1,8 +1,12 @@
+# The web application needs only these four. The interface is plain
+# HTML/CSS/JS served by Python's standard library, so there is no web
+# framework to install.
 numpy>=1.24
 pandas>=2.0
 scikit-learn>=1.4
+joblib>=1.3
+
+# Notebooks only: training, figures and AlphaFold structure parsing.
 matplotlib>=3.7
 seaborn>=0.13
 biopython>=1.83
-joblib>=1.3
-streamlit>=1.30
