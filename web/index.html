@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="BBB-TransAI predicts Blood-Brain Barrier permeability for peptides from sequence and structure descriptors.">
+<title>BBB-TransAI</title>
+<link rel="stylesheet" href="/assets/styles.css">
+<link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<div class="field" aria-hidden="true"></div>
+
+<header class="chrome">
+  <div class="chrome-inner">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3c-3.2 0-5.4 2-5.4 4.4 0 .7-.3 1.1-.9 1.7C4.6 10.2 4 11.3 4 12.7c0 1.5.8 2.7 2 3.4.2 1.9 1.9 3.4 4 3.4 1.2 0 2-.4 2-1.2V4.2c0-.8-.4-1.2-1.2-1.2z"/>
+        <path d="M13.2 3c0-.6.5-.8 1.2-.6 2.5.5 4.2 2.3 4.2 4.5 0 .5.2.8.7 1.3 1.1 1.1 1.7 2.3 1.7 3.8 0 1.6-.8 2.9-2.1 3.7-.3 2-2 3.5-4.2 3.5-.8 0-1.5-.3-1.5-1z"/>
+        <circle cx="9.1" cy="8.4" r="1.05"/>
+        <circle cx="16.1" cy="9.6" r="1.05"/>
+        <circle cx="10.2" cy="14.4" r="1.05"/>
+      </svg>
+      <span>BBB&#8209;TransAI</span>
+    </a>
+
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab is-selected" role="tab" aria-selected="true" data-panel="panel-predict">Predict</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="panel-model">Model</button>
+      <span class="tab-pill" aria-hidden="true"></span>
+    </nav>
+
+    <button class="icon-button" id="theme-toggle" type="button" aria-label="Switch appearance" title="Switch appearance">
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><g stroke-linecap="round"><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></g></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 019.4 4 8.6 8.6 0 1020 14.6z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= PREDICT ================= -->
+  <section class="panel is-active" id="panel-predict" role="tabpanel">
+
+    <div class="hero">
+      <h1>Peptide transit across the <span class="gradient-text">Blood&#8211;Brain Barrier</span></h1>
+      <p class="lede">
+        Paste a peptide sequence. BBB&#8209;TransAI returns a permeability probability from
+        30 sequence and structure descriptors, and shows which of them drove the result.
+      </p>
+    </div>
+
+    <div class="card composer">
+      <div class="segmented" role="radiogroup" aria-label="Input mode">
+        <button class="segment is-selected" role="radio" aria-checked="true" data-mode="single">Single peptide</button>
+        <button class="segment" role="radio" aria-checked="false" data-mode="batch">Batch</button>
+        <span class="segment-pill" aria-hidden="true"></span>
+      </div>
+
+      <!-- single -->
+      <div class="mode mode-single is-active" data-mode="single">
+        <label class="label" for="single-id">Identifier</label>
+        <input class="input" id="single-id" type="text" value="PEP_1" spellcheck="false" autocomplete="off" maxlength="48">
+
+        <div class="label-row">
+          <label class="label" for="single-seq">Sequence</label>
+          <span class="counter" id="single-counter">0 residues</span>
+        </div>
+        <textarea class="input mono seq" id="single-seq" rows="3" spellcheck="false" autocomplete="off"
+                  placeholder="YGRKKRRQRRR"></textarea>
+
+        <div class="readout" id="single-readout" hidden>
+          <span class="chip-stat"><b id="ro-length">&ndash;</b> residues</span>
+          <span class="chip-stat"><b id="ro-charge">&ndash;</b> net charge</span>
+          <span class="chip-stat"><b id="ro-positive">&ndash;</b> K/R/H</span>
+          <span class="chip-stat"><b id="ro-hydro">&ndash;</b> hydrophobic</span>
+        </div>
+
+        <div class="examples">
+          <span class="examples-label">Examples</span>
+          <button class="chip" type="button" data-id="TAT" data-seq="YGRKKRRQRRR">TAT</button>
+          <button class="chip" type="button" data-id="Angiopep-2" data-seq="TFFYGGSRGKRNNFKTEEY">Angiopep&#8209;2</button>
+          <button class="chip" type="button" data-id="Penetratin" data-seq="RQIKIWFQNRRMKWKK">Penetratin</button>
+          <button class="chip" type="button" data-id="MAP" data-seq="KLALKLALKALKAALKLA">MAP</button>
+        </div>
+      </div>
+
+      <!-- batch -->
+      <div class="mode mode-batch" data-mode="batch">
+        <div class="label-row">
+          <label class="label" for="batch-seq">Peptides</label>
+          <span class="counter" id="batch-counter">0 peptides</span>
+        </div>
+        <textarea class="input mono seq batch-area" id="batch-seq" rows="9" spellcheck="false" autocomplete="off"
+placeholder="TAT YGRKKRRQRRR
+Angiopep-2 TFFYGGSRGKRNNFKTEEY
+
+or FASTA:
+&gt;Penetratin
+RQIKIWFQNRRMKWKK"></textarea>
+        <p class="hint">One peptide per line as <code>ID SEQUENCE</code>, or paste FASTA. A line
+          with only a sequence is numbered automatically.</p>
+        <div class="examples">
+          <span class="examples-label">Load</span>
+          <button class="chip" type="button" id="batch-example">Four reference peptides</button>
+        </div>
+      </div>
+
+      <!-- structure -->
+      <details class="disclosure" id="structure-disclosure">
+        <summary>
+          <span>Attach a 3D structure</span>
+          <span class="disclosure-note" id="structure-summary">optional &middot; improves two descriptors</span>
+        </summary>
+        <div class="disclosure-body">
+          <p class="hint">
+            Radius of gyration and compactness, two of the thirty descriptors, come from a 3D model.
+            Without one they are estimated from chain length, which shifts the probability by about
+            0.02 on average. Attach a PDB or mmCIF model to measure them instead.
+          </p>
+          <label class="dropzone" id="dropzone" tabindex="0">
+            <input type="file" id="structure-file" accept=".pdb,.cif,.mmcif,.ent,.txt" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="dropzone-icon">
+              <path d="M12 16V4m0 0L8.2 7.8M12 4l3.8 3.8"/><path d="M4 15v3.2A1.8 1.8 0 005.8 20h12.4A1.8 1.8 0 0020 18.2V15"/>
+            </svg>
+            <span class="dropzone-text">Drop a <code>.pdb</code> or <code>.cif</code> file, or click to choose</span>
+          </label>
+          <div class="structure-result" id="structure-result" hidden></div>
+        </div>
+      </details>
+
+      <div class="actions">
+        <button class="button button-primary" id="run" type="button">
+          <span class="button-label">Predict permeability</span>
+        </button>
+        <button class="button button-quiet" id="clear" type="button">Clear</button>
+      </div>
+
+      <div class="error" id="error" role="alert" hidden></div>
+    </div>
+
+    <!-- progress -->
+    <div class="card progress-card" id="progress" hidden aria-live="polite">
+      <div class="progress-head">
+        <span class="spinner" aria-hidden="true"></span>
+        <span class="progress-stage" id="progress-stage">Preparing</span>
+        <span class="progress-count" id="progress-count"></span>
+      </div>
+      <div class="track"><span class="track-fill" id="progress-fill"></span></div>
+    </div>
+
+    <!-- results -->
+    <div id="results" class="results"></div>
+  </section>
+
+  <!-- ================= MODEL ================= -->
+  <section class="panel" id="panel-model" role="tabpanel">
+    <div class="hero">
+      <h1>What the <span class="gradient-text">model</span> is</h1>
+      <p class="lede">Every number below is read from the model file this server has loaded.</p>
+    </div>
+    <div id="model-card" class="model-card">
+      <div class="card"><p class="hint">Loading model details&hellip;</p></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>BBB&#8209;TransAI &middot; Lipid Biochemistry Laboratory, Gachon University</p>
+  <p class="footer-quiet">Research use only. Treat a predicted probability as a hypothesis to test in an assay.</p>
+</footer>
+
+<script src="/assets/app.js"></script>
+</body>
+</html>
