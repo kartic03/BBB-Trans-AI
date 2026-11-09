@@ -7,6 +7,8 @@ abstract: >-
   classify blood-brain barrier-penetrant peptides.
 type: software
 license: MIT
+version: 2.0.0
+date-released: "2026-11-09"
 repository-code: "https://github.com/kartic03/BBB-Trans-AI"
 keywords:
   - blood-brain barrier
